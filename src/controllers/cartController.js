@@ -3,7 +3,7 @@ const {  isValidObjectId,  } = require('../validations/userValidation')
 const userModel = require('../models/userModel')
 const productModel = require('../models/productModel')
 const cartModel = require('../models/cartModel')
-const orderModel = require('../models/orderModel')
+
 
 // ===============================================================================================================================================
 //                                                            ⬇️  CREATE CART API ⬇️
@@ -108,7 +108,7 @@ let updateCart = async function (req, res) {
 
     // check prodcut id Exists or not in db
     const isProductIdExist = await productModel.findOne({ _id: productId, isDeleted: false })
-    if (!isProductIdExist) return res.status(400).send({ status: false, message: `${productId} productId is not exists` })
+    if (!isProductIdExist) return res.status(404).send({ status: false, message: `${productId} productId is not exists` })
 
 
     if (!isValid(cartId)) return res.status(400).send({ status: false, message: "cartId tag is required" })
@@ -117,7 +117,7 @@ let updateCart = async function (req, res) {
     // check cartId exists or not in db
     const isCartIdExist = await cartModel.findOne({ _id: cartId });
 
-    if (!isCartIdExist) return res.status(400).send({ status: false, message: `${cartId} cartId is not exists` })
+    if (!isCartIdExist) return res.status(404).send({ status: false, message: `${cartId} cartId is not exists` })
 
     // cart exists with this user or not 
     const cart = await cartModel.findOne({ userId: userId })
@@ -133,7 +133,7 @@ let updateCart = async function (req, res) {
 
 
     let totalItems = isCartIdExist.totalItems;
-    console.log(totalItems)
+ 
     let totalPrice = isCartIdExist.totalPrice
     console.log(totalPrice)
 
@@ -151,7 +151,7 @@ let updateCart = async function (req, res) {
     if (removeProduct == 0) {
 
       let total = isCartIdExist.totalPrice - (isProductIdExist.price * isCartIdExist.items[index].quantity)
-      isCartIdExist.totalPrice = Math.round(total * 100) / 100
+      isCartIdExist.totalPrice = Math.round(total * 100)/100
       isCartIdExist.items.splice(index, 1)
       isCartIdExist.totalItems = totalItems - 1;
 
@@ -166,15 +166,15 @@ let updateCart = async function (req, res) {
         let total = isCartIdExist.totalPrice - (isProductIdExist.price * isCartIdExist.items[index].quantity)
         console.log(total)
 
-        isCartIdExist.totalPrice = Math.round(total * 100) / 100
+        isCartIdExist.totalPrice =Math.round(total * 100)/100
         isCartIdExist.items.splice(index, 1)
         isCartIdExist.totalItems = totalItems - 1;
       }
       else {
         let total = isCartIdExist.totalPrice - (isProductIdExist.price)
-        console.log(isProductIdExist.price)
+        // console.log(isProductIdExist.price)
         isCartIdExist.items[index].quantity = allItems[index].quantity - 1;
-        isCartIdExist.totalPrice = Math.round(total * 100) / 100
+        isCartIdExist.totalPrice = Math.round(total * 100)/100
         isCartIdExist.totalItems = isCartIdExist.items.length
       }
     }

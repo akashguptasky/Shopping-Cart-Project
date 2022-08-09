@@ -33,12 +33,6 @@ router.put('/users/:userId/orders',authentication,authorization,updateOrder)
 
 
 
-
-
-
-
-
-
 router.all("/*", function(req, res) {
     res.status(400).send({ msg: "No such Api found" })
 })

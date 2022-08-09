@@ -1,8 +1,7 @@
 const { isValidObjectId } = require('mongoose');
-const { findOneAndUpdate } = require('../models/productModel');
 const productModel = require('../models/productModel');
-const { isValidAddress, isValidSize } = require('../validations/userValidation');
-const {isBodyEmpty,IsNumuric,removeSpaces,isValidS3Url,validateEmail,checkAllSizes, checkAllSizesForUpdate,isValid, isValidMobileNo, isVerifyString,isValidJSONstr,acceptFileType,isEmpty}=require('../validations/validation');
+const { isValidSize } = require('../validations/userValidation');
+const {isBodyEmpty,IsNumuric,removeSpaces,checkAllSizes, checkAllSizesForUpdate,isValid,acceptFileType}=require('../validations/validation');
 const { uploadFile } = require('./aws-work');
 
 
@@ -13,7 +12,7 @@ const { uploadFile } = require('./aws-work');
 let createProduct = async function(req,res){
 
     try{
-    // let data = JSON.parse(JSON.stringify(req.body));
+ 
     let data = req.body
 
     // check body is empty or not
@@ -198,7 +197,7 @@ let updateProduct = async function(req,res){
         let isProductIdExist = await productModel.findOne({_id:productId, isDeleted:false});
         if(!isProductIdExist) return res.status(404).send({status:false, message:`${productId} doesn't exists`});
 
-        let data = JSON.parse(JSON.stringify(req.body));
+        let data = JSON.parse(req.body);
         let files = req.files;
 
         // if(isBodyEmpty(data)) return res.status(400).send({status:false, message:"please provide some data for filteration"});

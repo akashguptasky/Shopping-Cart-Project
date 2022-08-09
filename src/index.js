@@ -2,12 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = require('./routes/route')
 const multer= require("multer");
-const aws= require('aws-sdk');
 
 const app  = express();
 
-
-// raw data -->body
 app.use(express.json())
 
 app.use( multer().any())
